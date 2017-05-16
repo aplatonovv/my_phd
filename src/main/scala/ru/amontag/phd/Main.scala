@@ -10,5 +10,6 @@ object Main extends App {
   private val filePath = "B:\\projects\\phd\\resources\\dict.txt"
 
   val models: Map[Int, NGrammModel] = (2 to 4).map(n => n -> NGrammModel.build(text, n)).toMap
-  val build = NGrammTree.build(models)("просто мне очень хотелось смолчать")
+  val build = NGrammTree.build(models)("забыв слова великих я пошел на вы")
+  build
 }

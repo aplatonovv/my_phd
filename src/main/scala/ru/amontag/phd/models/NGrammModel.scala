@@ -21,10 +21,13 @@ class NGrammModel(val n: Int,
   }
 
   def estimateJoining(left: String, right: String): Double = {
-    assert(left.size + right.size >= n)
-    (for (i <- 1 until n) yield {
-      left.takeRight(i) + right.take(n - i)
-    }).map(estimateNGramm).max
+    if (left.size + right.size < n) {
+      -1.0
+    } else {
+      (for (i <- 1 until n) yield {
+        left.takeRight(i) + right.take(n - i)
+      }).map(estimateNGramm).max
+    }
   }
 
   def serializeTo(filename: String): Unit = NGrammModel.serializeTo(this, filename)
@@ -42,7 +45,7 @@ object NGrammModel {
     new NGrammModel(n, nGramms, nMinusOneGramm)
   }
 
-  private def split(text: String, n: Int): Seq[String] =  (generateStopSequence(n) + text + generateStopSequence(n))
+  private def split(text: String, n: Int): Seq[String] = (generateStopSequence(n) + text + generateStopSequence(n))
     .sliding(n, 1).toList
 
   private def generateStopSequence(n: Int): String = (0 until n).map(x => "$").mkString("")
